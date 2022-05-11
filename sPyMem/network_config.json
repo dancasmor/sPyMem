@@ -1,0 +1,97 @@
+{
+	"neuronParameters": {
+		"CA3dirL" : {
+			"cm": 0.27,
+		 	"i_offset": 0.0, 
+		 	"tau_m": 3.0, 
+		  	"tau_refrac": 1.0, 
+		  	"tau_syn_E": 0.3, 
+		  	"tau_syn_I": 0.3,
+		  	"v_reset": -60.0,
+		 	"v_rest": -60.0, 
+		 	"v_thresh": -57.0},
+		"CA3contL": {
+			"cm": 0.27, 
+			"i_offset": 0.0, 
+			"tau_m": 3.0, 
+			"tau_refrac": 1.0, 
+			"tau_syn_E": 0.3, 
+			"tau_syn_I": 0.3,
+		        "v_reset": -60.0, 
+		        "v_rest": -60.0, 
+		        "v_thresh": -57.5},
+		"IL": "Source Spike",
+		"DGL": {
+			"cm": 0.1, 
+			"tau_m": 0.1, 
+			"tau_refrac": 0.0, 
+			"tau_syn_E": 0.1, 
+			"tau_syn_I": 0.1,
+		        "v_rest": -65.0, 
+		        "v_reset": -65.0, 
+		        "v_thresh": -64.91},
+		"CA1L": {
+			"cm": 0.1, 
+			"tau_m": 0.1, 
+			"tau_refrac": 0.0, 
+			"tau_syn_E": 0.1, 
+			"tau_syn_I": 0.1,
+		        "v_rest": -65.0, 
+		        "v_reset": -65.0, 
+		        "v_thresh": -64.91},
+		"OL": {
+			"cm": 0.27, 
+			"i_offset": 0.0, 
+			"tau_m": 3.0, 
+			"tau_refrac": 1.0, 
+			"tau_syn_E": 0.3, 
+			"tau_syn_I": 0.3,
+		        "v_reset": -60.0, 
+		        "v_rest": -60.0, 
+		        "v_thresh": -57.5}
+	},
+	"initNeuronParameters" : {
+		"CA3dirL": {"vInit": -60},
+		"CA3contL": {"vInit": -60},
+		"IL": {"vInit": "False"},
+		"DG": {"vInit": "False"},
+		"OL": {"vInit": -60},
+		"CA1": {"vInit": "False"}
+	},
+	"synParameters" : {
+		"DGL-CA3dirL": {
+			"initWeight": 6.0, 
+			"delay": 1.0, 
+			"receptor_type": "excitatory"},
+		"IL-CA3contL": {
+			"initWeight": 6.0, 
+			"delay": 4.0, 
+			"receptor_type": "excitatory"},
+		"IL-DGL": {
+			"initWeight": 1.0, 
+			"delay": 1.0, 
+			"receptor_type": "library_component"},
+		"CA3dirL-CA3contL": {
+			"tau_plus": 3.0, 
+			"tau_minus": 3.0, 
+			"A_plus": 6.0, 
+			"A_minus": 6.0, 
+			"w_max": 6.0, 
+			"w_min": 0.0,
+		       "initWeight": 0.0, 
+		       "delay": 1.0, 
+		       "receptor_type": "STDP"},
+		"CA3dirL-CA1L": {
+			"initWeight": 1.0, 
+			"delay": 1.0, 
+			"receptor_type": "library_component"},
+		"CA1L-OL": {
+			"initWeight": 6.0, 
+			"delay": 1.0, 
+			"receptor_type": "excitatory"},
+		"CA3contL-OL": {
+			"initWeight": 6.0, 
+			"delay": 2.0, 
+			"receptor_type": "excitatory"}
+	}	
+}

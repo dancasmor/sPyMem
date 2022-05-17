@@ -1,6 +1,6 @@
 {
 	"neuronParameters": {
-		"CA3dirL" : {
+		"CA3cueL" : {
 			"cm": 0.27,
 		 	"i_offset": 0.0, 
 		 	"tau_m": 3.0, 
@@ -51,7 +51,7 @@
 		        "v_thresh": -57.5}
 	},
 	"initNeuronParameters" : {
-		"CA3dirL": {"vInit": -60},
+		"CA3cueL": {"vInit": -60},
 		"CA3contL": {"vInit": -60},
 		"IL": {"vInit": "False"},
 		"DG": {"vInit": "False"},
@@ -59,7 +59,7 @@
 		"CA1": {"vInit": "False"}
 	},
 	"synParameters" : {
-		"DGL-CA3dirL": {
+		"DGL-CA3cueL": {
 			"initWeight": 6.0, 
 			"delay": 1.0, 
 			"receptor_type": "excitatory"},
@@ -71,7 +71,7 @@
 			"initWeight": 1.0, 
 			"delay": 1.0, 
 			"receptor_type": "library_component"},
-		"CA3dirL-CA3contL": {
+		"CA3cueL-CA3contL": {
 			"tau_plus": 3.0, 
 			"tau_minus": 3.0, 
 			"A_plus": 6.0, 
@@ -81,7 +81,7 @@
 		       "initWeight": 0.0, 
 		       "delay": 1.0, 
 		       "receptor_type": "STDP"},
-		"CA3dirL-CA1L": {
+		"CA3cueL-CA1L": {
 			"initWeight": 1.0, 
 			"delay": 1.0, 
 			"receptor_type": "library_component"},

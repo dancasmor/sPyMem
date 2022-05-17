@@ -11,15 +11,15 @@ from sPyBlocks.neural_encoder import NeuralEncoder
 DG-CA3-CA1 one-hot memory
 
 + Population:
-    + Input: pattern input
-    + DG: one-hot codification of direction of the pattern
-    + CA3cue: store direction/cue of patterns
-    + CA3mem: store content/memories of patterns
-    + CA1: recode the direction of the pattern to make it binary again in the output
+    + Input: memory input
+    + DG: one-hot codification of cue of the memory
+    + CA3cue: store direction/cue of memories
+    + CA3cont: store content of memories
+    + CA1: recode the cue of the memory to make it binary again in the output
     + Output: output of the network
 
 + Synapses: 
-    + Input-DG: 1 to 1 excitatory and static (first n bits: corresponding to the direction of patterns)
+    + Input-DG: 1 to 1 excitatory and static (first n bits: corresponding to the cue of memories)
     + Input-CA3mem: 1 to 1 excitatory and static (the rest of the bits)
     + DG-CA3cue: 1 to 1 excitatory and static
     + CA3cue-CA3mem: all to all excitatory and dinamic (STDP).
@@ -29,10 +29,10 @@ DG-CA3-CA1 one-hot memory
 """
 
 class DG_CA3_CA1_one_hot_memory:
-    def __init__(self, cueSize, memSize, sim, configFilePath, ILayer, OLayer):
+    def __init__(self, cueSize, contSize, sim, configFilePath, ILayer, OLayer):
         # Storing parameters
         self.cueSize = cueSize
-        self.memSize = memSize
+        self.contSize = contSize
         self.sim = sim
         self.configFilePath = configFilePath
         self.ILayer = ILayer
@@ -56,9 +56,9 @@ class DG_CA3_CA1_one_hot_memory:
         # Input size of DG population (decoder)
         dgInputSize = math.ceil(math.log2(self.cueSize))
         # Size of IN population
-        ilInputSize = dgInputSize + self.memSize
+        ilInputSize = dgInputSize + self.contSize
         # Number of neurons for each population
-        self.popNeurons = {"ILayer": ilInputSize, "DGLayer": dgInputSize, "CA3cueLayer": self.cueSize, "CA3memLayer": self.memSize,
+        self.popNeurons = {"ILayer": ilInputSize, "DGLayer": dgInputSize, "CA3cueLayer": self.cueSize, "CA3contLayer": self.contSize,
                       "CA1Layer": self.cueSize, "OLayer": ilInputSize}
 
         # + Network components parameters
@@ -76,10 +76,10 @@ class DG_CA3_CA1_one_hot_memory:
         self.CA3cueLayer = self.sim.Population(self.popNeurons["CA3cueLayer"], self.sim.IF_curr_exp(**self.neuronParameters["CA3cueL"]),
                                                label="CA3cueLayer")
         self.CA3cueLayer.set(v=self.initNeuronParameters["CA3cueL"]["vInit"])
-        # CA3mem
-        self.CA3memLayer = self.sim.Population(self.popNeurons["CA3memLayer"], self.sim.IF_curr_exp(**self.neuronParameters["CA3memL"]),
-                                      label="CA3memLayer")
-        self.CA3memLayer.set(v=self.initNeuronParameters["CA3memL"]["vInit"])
+        # CA3cont
+        self.CA3contLayer = self.sim.Population(self.popNeurons["CA3contLayer"], self.sim.IF_curr_exp(**self.neuronParameters["CA3contL"]),
+                                                label="CA3contLayer")
+        self.CA3contLayer.set(v=self.initNeuronParameters["CA3contL"]["vInit"])
         # DG (decoder)
         self.DGLayer = NeuralDecoder(self.popNeurons["DGLayer"], self.sim, {"min_delay": self.synParameters["IL-DGL"]["delay"]},
                                      self.neuronParameters["DGL"], self.sim.StaticSynapse(weight=self.synParameters["IL-DGL"]["initWeight"],
@@ -106,32 +106,32 @@ class DG_CA3_CA1_one_hot_memory:
                                                        delay=self.synParameters["DGL-CA3cueL"]["delay"]))
         self.DGLayer.connect_constant_spikes([self.constant_spike_source.set_source, self.constant_spike_source.latch.output_neuron])
 
-        # IL-CA3mem -> 1 to 1, excitatory and static (last m neurons of DG: only the number of cues to use)
-        IL_CA3memL_conn = self.sim.Projection(self.sim.PopulationView(self.ILayer, range(self.popNeurons["DGLayer"], self.popNeurons["ILayer"], 1)),
-                                               self.CA3memLayer,
-                                               self.sim.OneToOneConnector(),
-                                               synapse_type=self.sim.StaticSynapse(
-                                                   weight=self.synParameters["IL-CA3memL"]["initWeight"],
-                                                   delay=self.synParameters["IL-CA3memL"]["delay"]),
-                                               receptor_type=self.synParameters["IL-CA3memL"]["receptor_type"])
+        # IL-CA3cont -> 1 to 1, excitatory and static (last m neurons of DG: only the number of cues to use)
+        IL_CA3contL_conn = self.sim.Projection(self.sim.PopulationView(self.ILayer, range(self.popNeurons["DGLayer"], self.popNeurons["ILayer"], 1)),
+                                              self.CA3contLayer,
+                                              self.sim.OneToOneConnector(),
+                                              synapse_type=self.sim.StaticSynapse(
+                                                   weight=self.synParameters["IL-CA3contL"]["initWeight"],
+                                                   delay=self.synParameters["IL-CA3contL"]["delay"]),
+                                              receptor_type=self.synParameters["IL-CA3contL"]["receptor_type"])
 
-        # CA3cue-CA3mem -> all to all STDP
+        # CA3cue-CA3cont -> all to all STDP
         # + Time rule
-        timing_rule = self.sim.SpikePairRule(tau_plus=self.synParameters["CA3cueL-CA3memL"]["tau_plus"],
-                                        tau_minus=self.synParameters["CA3cueL-CA3memL"]["tau_minus"],
-                                        A_plus=self.synParameters["CA3cueL-CA3memL"]["A_plus"],
-                                        A_minus=self.synParameters["CA3cueL-CA3memL"]["A_minus"])
+        timing_rule = self.sim.SpikePairRule(tau_plus=self.synParameters["CA3cueL-CA3contL"]["tau_plus"],
+                                        tau_minus=self.synParameters["CA3cueL-CA3contL"]["tau_minus"],
+                                        A_plus=self.synParameters["CA3cueL-CA3contL"]["A_plus"],
+                                        A_minus=self.synParameters["CA3cueL-CA3contL"]["A_minus"])
         # + Weight rule
-        weight_rule = self.sim.AdditiveWeightDependence(w_max=self.synParameters["CA3cueL-CA3memL"]["w_max"],
-                                                   w_min=self.synParameters["CA3cueL-CA3memL"]["w_min"])
+        weight_rule = self.sim.AdditiveWeightDependence(w_max=self.synParameters["CA3cueL-CA3contL"]["w_max"],
+                                                   w_min=self.synParameters["CA3cueL-CA3contL"]["w_min"])
         # + STDP model
         stdp_model = self.sim.STDPMechanism(timing_dependence=timing_rule, weight_dependence=weight_rule,
-                                       weight=self.synParameters["CA3cueL-CA3memL"]["initWeight"],
-                                       delay=self.synParameters["CA3cueL-CA3memL"]["delay"])
+                                       weight=self.synParameters["CA3cueL-CA3contL"]["initWeight"],
+                                       delay=self.synParameters["CA3cueL-CA3contL"]["delay"])
         # + Create the STDP synapses
-        CA3cueL_CA3memL_conn = self.sim.Projection(self.CA3cueLayer, self.CA3memLayer,
-                                                    self.sim.AllToAllConnector(allow_self_connections=True),
-                                                    synapse_type=stdp_model)
+        CA3cueL_CA3contL_conn = self.sim.Projection(self.CA3cueLayer, self.CA3contLayer,
+                                                   self.sim.AllToAllConnector(allow_self_connections=True),
+                                                   synapse_type=stdp_model)
 
         # CA3cue-CA1 -> 1 to 1 excitatory and static
         pop_len = len(self.CA3cueLayer)
@@ -150,13 +150,13 @@ class DG_CA3_CA1_one_hot_memory:
                                  conn=self.sim.StaticSynapse(weight=self.synParameters["CA1L-OL"]["initWeight"],
                                                         delay=self.synParameters["CA1L-OL"]["delay"]))
 
-        # CA3mem-Output -> 1 to 1 excitatory and static
-        CA3memL_OL_conn = self.sim.Projection(self.CA3memLayer, self.sim.PopulationView(self.OLayer, range(self.popNeurons["DGLayer"], self.popNeurons["OLayer"], 1)),
-                                          self.sim.OneToOneConnector(),
-                                          synapse_type=self.sim.StaticSynapse(
-                                              weight=self.synParameters["CA3memL-OL"]["initWeight"],
-                                              delay=self.synParameters["CA3memL-OL"]["delay"]),
-                                          receptor_type=self.synParameters["CA3memL-OL"]["receptor_type"])
+        # CA3cont-Output -> 1 to 1 excitatory and static
+        CA3contL_OL_conn = self.sim.Projection(self.CA3contLayer, self.sim.PopulationView(self.OLayer, range(self.popNeurons["DGLayer"], self.popNeurons["OLayer"], 1)),
+                                              self.sim.OneToOneConnector(),
+                                              synapse_type=self.sim.StaticSynapse(
+                                              weight=self.synParameters["CA3contL-OL"]["initWeight"],
+                                              delay=self.synParameters["CA3contL-OL"]["delay"]),
+                                              receptor_type=self.synParameters["CA3contL-OL"]["receptor_type"])
 
 
 

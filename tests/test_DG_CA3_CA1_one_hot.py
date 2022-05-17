@@ -8,8 +8,8 @@ import math
 # Parameters:
 # + Number of directions of the memory
 cueSize = 5
-# + Size of the patterns in bits/neuron
-memSize = 10
+# + Size of the content of the memory in bits/neuron
+contSize = 10
 # + Path to the file with the configuration parameters of the memory network
 configFilePath = "network_config.json"
 
@@ -20,11 +20,11 @@ timeStep = 1.0
 
 # + Spikes of the input layer
 inputSpikesCue = [[1, 2, 3, 12], [], []]
-inputSpikesMem = [[1, 2, 3], [1, 2, 3], [1, 2, 3], [], [], [], [], [], [], [1, 2, 3]]
-inputSpikes = inputSpikesCue + inputSpikesMem
+inputSpikesCont = [[1, 2, 3], [1, 2, 3], [1, 2, 3], [], [], [], [], [], [], [1, 2, 3]]
+inputSpikes = inputSpikesCue + inputSpikesCont
 
 # + Number of neurons in input layer: the number of bits neccesary to represent the number of directions in binary + the size of patterns
-numInputLayerNeurons = math.ceil(math.log2(cueSize)) + memSize
+numInputLayerNeurons = math.ceil(math.log2(cueSize)) + contSize
 
 
 def test():
@@ -40,7 +40,7 @@ def test():
     OLayer = sim.Population(numInputLayerNeurons, sim.IF_curr_exp(**neuronParameters), label="OLayer")
     OLayer.set(v=-60)
     # Create memory
-    memory = DG_CA3_CA1_one_hot.DG_CA3_CA1_one_hot_memory(cueSize, memSize, sim, configFilePath, ILayer, OLayer)
+    memory = DG_CA3_CA1_one_hot.DG_CA3_CA1_one_hot_memory(cueSize, contSize, sim, configFilePath, ILayer, OLayer)
 
     # Record spikes from output layer
     OLayer.record(["spikes"])

@@ -8,7 +8,7 @@ from sPyBlocks.neural_encoder import NeuralEncoder
 
 
 """
-DG-CA3-CA1 one-hot memory
+hippocampus_with_forgetting (DG-CA3-CA1 one-hot memory)
 
 + Population:
     + Input: memory input
@@ -28,7 +28,7 @@ DG-CA3-CA1 one-hot memory
     + CA3mem-Output: 1 to 1 excitatory and static
 """
 
-class DG_CA3_CA1_one_hot_memory:
+class Memory:
     def __init__(self, cueSize, contSize, sim, configFilePath, ILayer, OLayer):
         # Storing parameters
         self.cueSize = cueSize

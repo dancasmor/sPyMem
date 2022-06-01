@@ -1,6 +1,6 @@
 
 import matplotlib.pyplot as plt
-import DG_CA3_CA1_one_hot
+from sPyMem import hippocampus_with_forgetting
 import spynnaker8 as sim
 import math
 
@@ -40,7 +40,7 @@ def test():
     OLayer = sim.Population(numInputLayerNeurons, sim.IF_curr_exp(**neuronParameters), label="OLayer")
     OLayer.set(v=-60)
     # Create memory
-    memory = DG_CA3_CA1_one_hot.DG_CA3_CA1_one_hot_memory(cueSize, contSize, sim, configFilePath, ILayer, OLayer)
+    memory = hippocampus_with_forgetting.Memory(cueSize, contSize, sim, configFilePath, ILayer, OLayer)
 
     # Record spikes from output layer
     OLayer.record(["spikes"])

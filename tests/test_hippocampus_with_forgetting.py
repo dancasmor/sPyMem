@@ -4,6 +4,15 @@ from sPyMem import hippocampus_with_forgetting
 import spynnaker8 as sim
 import math
 
+"""
+Proof of concept of Hippocampus bio-inspired pulse-based memory
+
+Create an hippocampal memory with forgetting and add:
+    + A source input spikes population to the input of the memory
+    + A dummy output population to the output population of the memory to record memory output spikes
+Given an input spikes sequences, record the output of the memory and plot it. The plot represents the neuron id of
+neurons that fired in each timestamp. 
+"""
 
 # Parameters:
 # + Number of directions of the memory

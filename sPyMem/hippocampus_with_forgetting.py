@@ -8,7 +8,7 @@ from sPyBlocks.neural_encoder import NeuralEncoder
 
 
 """
-hippocampus_with_forgetting (DG-CA3-CA1 one-hot memory)
+Memory with forgetting (DG-CA3-CA1 one-hot memory)
 
 + Population:
     + Input: memory input

@@ -5,7 +5,7 @@ import spynnaker8 as sim
 import math
 
 """
-Proof of concept of Hippocampus bio-inspired pulse-based memory
+Proof of concept of Hippocampus bio-inspired pulse-based memory with forgetting
 
 Create an hippocampal memory with forgetting and add:
     + A source input spikes population to the input of the memory
@@ -19,8 +19,6 @@ neurons that fired in each timestamp.
 cueSize = 5
 # + Size of the content of the memory in bits/neuron
 contSize = 10
-# + Path to the file with the configuration parameters of the memory network
-configFilePath = "network_config.json"
 
 # + Duration of the simulation
 simTime = 25
@@ -32,7 +30,8 @@ inputSpikesCue = [[1, 2, 3, 12], [], []]
 inputSpikesCont = [[1, 2, 3], [1, 2, 3], [1, 2, 3], [], [], [], [], [], [], [1, 2, 3]]
 inputSpikes = inputSpikesCue + inputSpikesCont
 
-# + Number of neurons in input layer: the number of bits neccesary to represent the number of directions in binary + the size of patterns
+# + Number of neurons in input layer: the number of bits neccesary to represent the number of directions in
+#    binary + the size of patterns
 numInputLayerNeurons = math.ceil(math.log2(cueSize)) + contSize
 
 
@@ -49,7 +48,7 @@ def test():
     OLayer = sim.Population(numInputLayerNeurons, sim.IF_curr_exp(**neuronParameters), label="OLayer")
     OLayer.set(v=-60)
     # Create memory
-    memory = hippocampus_with_forgetting.Memory(cueSize, contSize, sim, configFilePath, ILayer, OLayer)
+    memory = hippocampus_with_forgetting.Memory(cueSize, contSize, sim, ILayer, OLayer)
 
     # Record spikes from output layer
     OLayer.record(["spikes"])

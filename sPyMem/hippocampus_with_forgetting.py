@@ -1,6 +1,7 @@
 
 import math
 import json
+import os
 from sPyBlocks.constant_spike_source import ConstantSpikeSource
 from sPyBlocks.neural_decoder import NeuralDecoder
 from sPyBlocks.neural_encoder import NeuralEncoder
@@ -26,17 +27,24 @@ Memory with forgetting (DG-CA3-CA1 one-hot memory)
     + CA3cue-CA1: 1 to 1 excitatory and static
     + CA1-Output: 1 to 1 excitatory and static
     + CA3mem-Output: 1 to 1 excitatory and static
+
+More information in paper: 
+https://arxiv.org/abs/2205.04782
 """
 
 class Memory:
-    def __init__(self, cueSize, contSize, sim, configFilePath, ILayer, OLayer):
+    def __init__(self, cueSize, contSize, sim, ILayer, OLayer, configFilePath=None):
         # Storing parameters
         self.cueSize = cueSize
         self.contSize = contSize
         self.sim = sim
-        self.configFilePath = configFilePath
         self.ILayer = ILayer
         self.OLayer = OLayer
+
+        if configFilePath == None:
+            self.configFilePath = os.path.dirname(__file__) + "/config/hippocampus_with_forgetting_network_config.json"
+        else:
+            self.configFilePath = os.getcwd() + "/" + configFilePath
 
         # Open configurations files to get the parameters
         self.open_config_files()
@@ -49,7 +57,7 @@ class Memory:
             file = open(self.configFilePath)
             return json.load(file)
         except FileNotFoundError:
-            return False
+            raise NameError(str(self.configFilePath) + " -  path to config file not found")
 
     def open_config_files(self):
         # + Calculated memory parameters

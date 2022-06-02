@@ -11,7 +11,14 @@ Create an hippocampal memory with forgetting and add:
     + A source input spikes population to the input of the memory
     + A dummy output population to the output population of the memory to record memory output spikes
 Given an input spikes sequences, record the output of the memory and plot it. The plot represents the neuron id of
-neurons that fired in each timestamp. 
+ neurons that fired in each timestamp. 
+
+The network has a storage capacity of 5 memories at the same time of a size of 13 neurons. Of these 13 neurons,
+ the 3 least significant neurons represent the cue and the remaining 10 represent the content of the memory.
+
+The simulation lasts 25 ms during which a learning and a recall operation is performed on the memory formed by:
+    + Cue = 0
+    + Cont = 0, 1, 2, 9
 """
 
 # Parameters:

@@ -33,6 +33,29 @@ https://arxiv.org/abs/2205.04782
 """
 
 class Memory:
+    """
+       Spike-based bio-inspired hippocampal memory model with forgetting
+
+       :param cueSize: number of cues of the memory
+       :type cueSize: int
+       :param contSize: size of the content of the memory in bits/neuron
+       :type contSize: int
+
+       :ivar cueSize: initial value: cueSize
+       :ivar contSize: initial value: contSize
+       :ivar sim: initial value: sim
+       :ivar ILayer: initial value: ILayer
+       :ivar OLayer: initial value: OLayer
+       :ivar configFilePath: initial value: configFilePath or internal path to default config file
+       :ivar popNeurons:
+       :ivar neuronParameters:
+       :ivar initNeuronParameters:
+       :ivar synParameters:
+       :ivar CA3cueLayer:
+       :ivar CA3contLayer:
+       :ivar DGLayer:
+       :ivar CA1Layer:
+    """
     def __init__(self, cueSize, contSize, sim, ILayer, OLayer, configFilePath=None):
         # Storing parameters
         self.cueSize = cueSize
@@ -53,6 +76,13 @@ class Memory:
         self.create_synapses()
 
     def read_json(self):
+        """Open configuration json file with all the internal parameters needed by the network
+
+            :raises: :class:`NameError`: path to config file not found
+
+            :returns: the json data as a dict
+            :rtype: dict
+        """
         try:
             file = open(self.configFilePath)
             return json.load(file)

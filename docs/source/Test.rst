@@ -1,3 +1,4 @@
+.. _test_and_applications:
 
 Tests and applications
 ======================

@@ -33,30 +33,53 @@ https://arxiv.org/abs/2205.04782
 """
 
 class Memory:
-    """
-       Spike-based bio-inspired hippocampal memory model with forgetting
+    """Spike-based bio-inspired hippocampal memory model with forgetting
 
        :param cueSize: number of cues of the memory
        :type cueSize: int
        :param contSize: size of the content of the memory in bits/neuron
        :type contSize: int
+       :param sim: object in charge of handling the simulation
+       :type sim: simulation object (spynnaker8 for spynnaker)
+       :param ILayer: input population to the memory model
+       :type ILayer: population
+       :param OLayer: output population of the memory model
+       :type OLayer: population
+       :param configFilePath: path + filename to the config file of internal model parameters
+       :type configFilePath: int, optional
 
-       :ivar cueSize: initial value: cueSize
-       :ivar contSize: initial value: contSize
-       :ivar sim: initial value: sim
-       :ivar ILayer: initial value: ILayer
-       :ivar OLayer: initial value: OLayer
-       :ivar configFilePath: initial value: configFilePath or internal path to default config file
-       :ivar popNeurons:
-       :ivar neuronParameters:
-       :ivar initNeuronParameters:
-       :ivar synParameters:
-       :ivar CA3cueLayer:
-       :ivar CA3contLayer:
-       :ivar DGLayer:
-       :ivar CA1Layer:
+       :ivar cueSize: number of cues of the memory, initial value: cueSize
+       :vartype cueSize: int
+       :ivar contSize: size of the content of the memory in bits/neuron, initial value: contSize
+       :vartype contSize: int
+       :ivar sim: object in charge of handling the simulation, initial value: sim
+       :vartype sim: simulation object (spynnaker8 for spynnaker)
+       :ivar ILayer: input population to the memory model, initial value: ILayer
+       :vartype ILayer: population
+       :ivar CA3cueLayer: CA3cue population
+       :vartype CA3cueLayer: population
+       :ivar CA3contLayer: CA3cont population
+       :vartype CA3contLayer: population
+       :ivar DGLayer: DG population
+       :vartype DGLayer: population
+       :ivar CA1Layer: CA1 population
+       :vartype CA1Layer: population
+       :ivar OLayer: output population of the memory model, initial value: OLayer
+       :vartype OLayer: population
+       :ivar configFilePath: path + filename to the config file of internal model parameters, initial value: configFilePath or internal path to default config file
+       :vartype configFilePath: str
+       :ivar popNeurons: dict that contains the number of neuron of each population, at the input interface level - {"ILayer": ilInputSize, "DGLayer": dgInputSize, "CA3cueLayer": self.cueSize, "CA3contLayer": self.contSize, "CA1Layer": self.cueSize, "OLayer": ilInputSize}
+       :vartype popNeurons: dict
+       :ivar neuronParameters: all neuron parameters of each population (for more information see `Custom config files`_)
+       :vartype neuronParameters: dict
+       :ivar initNeuronParameters: init membrane potential of each population (for more information see `Custom config files`_)
+       :vartype initNeuronParameters: dict
+       :ivar synParameters: all synapses parameters of each synapse group (for more information see `Custom config files`_)
+       :vartype synParameters: dict
     """
     def __init__(self, cueSize, contSize, sim, ILayer, OLayer, configFilePath=None):
+        """Constructor method
+        """
         # Storing parameters
         self.cueSize = cueSize
         self.contSize = contSize
@@ -76,7 +99,7 @@ class Memory:
         self.create_synapses()
 
     def read_json(self):
-        """Open configuration json file with all the internal parameters needed by the network
+        """Open json file
 
             :raises: :class:`NameError`: path to config file not found
 
@@ -90,6 +113,10 @@ class Memory:
             raise NameError(str(self.configFilePath) + " -  path to config file not found")
 
     def open_config_files(self):
+        """Open configuration json file with all the internal parameters needed by the network and assign parameters to variables
+
+                    :returns:
+                """
         # + Calculated memory parameters
         # Input size of DG population (decoder)
         dgInputSize = math.ceil(math.log2(self.cueSize))
@@ -110,6 +137,11 @@ class Memory:
 
 
     def create_population(self):
+        """Create all populations of the memory model
+
+
+                    :returns:
+                """
         # CA3cue
         self.CA3cueLayer = self.sim.Population(self.popNeurons["CA3cueLayer"], self.sim.IF_curr_exp(**self.neuronParameters["CA3cueL"]),
                                                label="CA3cueLayer")
@@ -134,6 +166,10 @@ class Memory:
                                                         delay=self.synParameters["CA3cueL-CA1L"]["delay"]))
 
     def create_synapses(self):
+        """Create all synapses of the memory model
+
+                    :returns:
+                """
         # IL-DG -> 1 to 1, excitatory and static (first dgInputSize bits/neurons)
         self.DGLayer.connect_inputs(self.sim.PopulationView(self.ILayer, range(self.popNeurons["DGLayer"])),
                                ini_pop_indexes=[[i] for i in range(self.popNeurons["DGLayer"])])

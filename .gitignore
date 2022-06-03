@@ -1,0 +1,9 @@
+.idea/*
+*__pycache__
+venv/*
+*reports
+*.pyc
+.spynnaker.cfg.lnk
+build/
+dist/
+sPyMem.egg-info/

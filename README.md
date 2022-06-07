@@ -26,13 +26,13 @@
 <h2>Installing</h2>
 
 <p align="justify">
-You can install sPyMem via pip thanks to its [PyPi](https://pypi.org/project/sPyMem/) distribution:
+You can install sPyMem via pip thanks to its <a href="https://pypi.org/project/sPyMem/">PyPi</a> distribution:
 
 ```
 pip install sPyMem
 ```
 
-or download it from source on their [github repository](https://github.com/dancasmor/sPyMem/).
+or download it from source on their <a href="https://github.com/dancasmor/sPyMem/">github repository</a>.
 </p>
 
 

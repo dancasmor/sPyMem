@@ -32,6 +32,14 @@ To integrate the memory model in your own network, just import the model class a
 
 The full example can be found at `sPyMem Github <https://github.com/dancasmor/sPyMem>`_, and for other examples see `Test and applications <Test.html>`_ section.
 
+This model of memory can perform 3 basic operations: learning memories, reacalling learned memories and forgetting them. Forgetting will take place automatically when an attempt is made to learn a memory with the same cue as a previously stored memory.
+
+In order to carry out learning and recall operations in this model, it is necessary to consider the following. For learning operations, spikes need to be held for 3 time units at the input of the memory and no further operation can be performed until 7 time units later. In the case of recall operations, spikes must be displayed for a single time unit and 6 time units must be waited until the next operation.
+
+When performing a learning operation, the network stores a memory and, 8 time units after having started the operation, the memory returns the learned memory to its output. In the case of a recall operation, after 6 time units the cue used to start the operation will appear at the memory output and one time unit later the rest of the memory.
+
+For more information on this temporality, principles of operation, internal functioning, ... read the paper.
+
 Custom config files
 -------------------
 

@@ -7,10 +7,18 @@ This sections shows the hippocampus memory model with forgetting mechanism (Memo
 Theoretical model
 -----------------
 
-This memory model comes from the paper entitled: "A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model", which can be found here (pending acceptance and publication). 
+This memory model comes from the paper entitled: "A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model", which can be found `here <https://arxiv.org/abs/2206.04924>`_.
 
 To refer to this particular model:
-(pending acceptance and publication)
+
+**APA**: Casanueva-Morato, D., Ayuso-Martinez, A., Dominguez-Morales, J. P., Jimenez-Fernandez, A., & Jimenez-Moreno, G. (2022). A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model. arXiv preprint arXiv:2206.04924.
+
+**ISO 690**: CASANUEVA-MORATO, Daniel, et al. A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model. arXiv preprint arXiv:2206.04924, 2022.
+
+**MLA**: Casanueva-Morato, Daniel, et al. "A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model." arXiv preprint arXiv:2206.04924 (2022).
+
+**BIBTEX**: @article{casanueva2022a, title={A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model}, author={Casanueva-Morato, Daniel and Ayuso-Martinez, Alvaro and Dominguez-Morales, Juan P and Jimenez-Fernandez, Angel and Jimenez-Moreno, Gabriel}, journal={arXiv preprint arXiv:2206.04924}, year={2022}}
+
 
 Class information
 -----------------

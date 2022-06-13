@@ -6,8 +6,6 @@ Welcome to sPyMem's documentation!
 	:target: https://github.com/dancasmor/sPyMem/blob/main/LICENSE
 .. image:: https://img.shields.io/pypi/v/spymem?label=PyPi&style=plastic   :alt: PyPI 
 	:target: https://pypi.python.org/pypi/sPyMem/
-.. image:: https://img.shields.io/github/downloads/dancasmor/sPyMem/total?label=GitHub%20Downloads&style=plastic   :alt: GitHub all releases 
-	:target: https://github.com/dancasmor/sPyMem/
 .. image:: https://img.shields.io/readthedocs/spymem?label=ReadTheDocs&style=plastic   :alt: ReadTheDocs
 	:target: https://spymem.readthedocs.io/en/latest
 

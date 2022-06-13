@@ -7,9 +7,6 @@
 	<a href="https://pypi.python.org/pypi/sPyMem/">
 	<img src="https://img.shields.io/pypi/v/sPyMem.svg"/>
 	</a>
-	<a href="https://github.com/dancasmor/sPyMem/">
-	<img src="https://img.shields.io/github/downloads/dancasmor/sPyMem/total?label=GitHub%20Downloads&style=plastic"/>
-	</a>
 	<a href="https://spymem.readthedocs.io/en/latest">
 	<img src="https://readthedocs.org/projects/spymem/badge/?version=latest"/>
 	</a>

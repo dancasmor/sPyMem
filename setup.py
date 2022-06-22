@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='sPyMem',
-    version="0.0.1",
+    version="0.0.2",
     author="Daniel Casanueva Morato",
     author_email="dcasanueva@us.es",
     description="An open-source package that offer fully-functional spike-based bio-inspired hippocampal memory models implemented with SNN technology in the SpiNNaker hardware.",

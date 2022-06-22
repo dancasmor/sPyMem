@@ -181,7 +181,7 @@ class Memory:
         self.DGLayer.connect_constant_spikes([self.constant_spike_source.set_source, self.constant_spike_source.latch.output_neuron])
 
         # IL-CA3cont -> 1 to 1, excitatory and static (last m neurons of DG: only the number of cues to use)
-        IL_CA3contL_conn = self.sim.Projection(self.sim.PopulationView(self.ILayer, range(self.popNeurons["DGLayer"], self.popNeurons["ILayer"], 1)),
+        self.IL_CA3contL_conn = self.sim.Projection(self.sim.PopulationView(self.ILayer, range(self.popNeurons["DGLayer"], self.popNeurons["ILayer"], 1)),
                                               self.CA3contLayer,
                                               self.sim.OneToOneConnector(),
                                               synapse_type=self.sim.StaticSynapse(
@@ -203,7 +203,7 @@ class Memory:
                                        weight=self.synParameters["CA3cueL-CA3contL"]["initWeight"],
                                        delay=self.synParameters["CA3cueL-CA3contL"]["delay"])
         # + Create the STDP synapses
-        CA3cueL_CA3contL_conn = self.sim.Projection(self.CA3cueLayer, self.CA3contLayer,
+        self.CA3cueL_CA3contL_conn = self.sim.Projection(self.CA3cueLayer, self.CA3contLayer,
                                                    self.sim.AllToAllConnector(allow_self_connections=True),
                                                    synapse_type=stdp_model)
 
@@ -225,7 +225,7 @@ class Memory:
                                                         delay=self.synParameters["CA1L-OL"]["delay"]))
 
         # CA3cont-Output -> 1 to 1 excitatory and static
-        CA3contL_OL_conn = self.sim.Projection(self.CA3contLayer, self.sim.PopulationView(self.OLayer, range(self.popNeurons["DGLayer"], self.popNeurons["OLayer"], 1)),
+        self.CA3contL_OL_conn = self.sim.Projection(self.CA3contLayer, self.sim.PopulationView(self.OLayer, range(self.popNeurons["DGLayer"], self.popNeurons["OLayer"], 1)),
                                               self.sim.OneToOneConnector(),
                                               synapse_type=self.sim.StaticSynapse(
                                               weight=self.synParameters["CA3contL-OL"]["initWeight"],

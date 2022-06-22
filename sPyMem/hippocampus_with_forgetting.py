@@ -76,6 +76,12 @@ class Memory:
        :vartype initNeuronParameters: dict
        :ivar synParameters: all synapses parameters of each synapse group (for more information see `Custom config files`_)
        :vartype synParameters: dict
+       :ivar IL_CA3contL_conn: IL-CA3cont synapses
+       :vartype IL_CA3contL_conn: synapse
+       :ivar CA3cueL_CA3contL_conn: CA3cue-CA3cont synapses (STDP)
+       :vartype CA3cueL_CA3contL_conn: synapse
+       :ivar CA3contL_OL_conn: CA3cont-OL synapses
+       :vartype CA3contL_OL_conn: synapse
     """
     def __init__(self, cueSize, contSize, sim, ILayer, OLayer, configFilePath=None):
         """Constructor method

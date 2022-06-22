@@ -125,7 +125,7 @@ class Memory:
                 """
         # + Calculated memory parameters
         # Input size of DG population (decoder)
-        dgInputSize = math.ceil(math.log2(self.cueSize))
+        dgInputSize = math.ceil(math.log2(self.cueSize+1))
         # Size of IN population
         ilInputSize = dgInputSize + self.contSize
         # Number of neurons for each population
@@ -144,7 +144,6 @@ class Memory:
 
     def create_population(self):
         """Create all populations of the memory model
-
 
                     :returns:
                 """

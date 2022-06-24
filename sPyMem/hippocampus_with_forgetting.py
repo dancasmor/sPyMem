@@ -47,6 +47,8 @@ class Memory:
        :type OLayer: population
        :param configFilePath: path + filename to the config file of internal model parameters
        :type configFilePath: int, optional
+       :param initCA3W: list of initial weight to use in CA3 synapse (initial memory content); format of each element of the list: (source_neuron_id, destination_neuron_id, initial_weight, delay)
+       :type initCA3W: list, optional
 
        :ivar cueSize: number of cues of the memory, initial value: cueSize
        :vartype cueSize: int
@@ -68,6 +70,8 @@ class Memory:
        :vartype OLayer: population
        :ivar configFilePath: path + filename to the config file of internal model parameters, initial value: configFilePath or internal path to default config file
        :vartype configFilePath: str
+       :ivar initCA3W: list of initial weight to use in CA3 synapse (initial memory content); format of each element of the list: (source_neuron_id, destination_neuron_id, initial_weight, delay), initial value: None or input class parameter
+       :vartype initCA3W: list
        :ivar popNeurons: dict that contains the number of neuron of each population, at the input interface level - {"ILayer": ilInputSize, "DGLayer": dgInputSize, "CA3cueLayer": self.cueSize, "CA3contLayer": self.contSize, "CA1Layer": self.cueSize, "OLayer": ilInputSize}
        :vartype popNeurons: dict
        :ivar neuronParameters: all neuron parameters of each population (for more information see `Custom config files`_)
@@ -83,7 +87,7 @@ class Memory:
        :ivar CA3contL_OL_conn: CA3cont-OL synapses
        :vartype CA3contL_OL_conn: synapse
     """
-    def __init__(self, cueSize, contSize, sim, ILayer, OLayer, configFilePath=None):
+    def __init__(self, cueSize, contSize, sim, ILayer, OLayer, initCA3W=None, configFilePath=None):
         """Constructor method
         """
         # Storing parameters
@@ -97,6 +101,8 @@ class Memory:
             self.configFilePath = os.path.dirname(__file__) + "/config/hippocampus_with_forgetting_network_config.json"
         else:
             self.configFilePath = os.getcwd() + "/" + configFilePath
+
+        self.initCA3W = initCA3W
 
         # Open configurations files to get the parameters
         self.open_config_files()
@@ -208,9 +214,14 @@ class Memory:
                                        weight=self.synParameters["CA3cueL-CA3contL"]["initWeight"],
                                        delay=self.synParameters["CA3cueL-CA3contL"]["delay"])
         # + Create the STDP synapses
-        self.CA3cueL_CA3contL_conn = self.sim.Projection(self.CA3cueLayer, self.CA3contLayer,
-                                                   self.sim.AllToAllConnector(allow_self_connections=True),
-                                                   synapse_type=stdp_model)
+        if self.initCA3W == None:
+            self.CA3cueL_CA3contL_conn = self.sim.Projection(self.CA3cueLayer, self.CA3contLayer,
+                                                             self.sim.AllToAllConnector(allow_self_connections=True),
+                                                             synapse_type=stdp_model)
+        else:
+            self.CA3cueL_CA3contL_conn = self.sim.Projection(self.CA3cueLayer, self.CA3contLayer,
+                                                             self.sim.FromListConnector(self.initCA3W),
+                                                             synapse_type=stdp_model)
 
         # CA3cue-CA1 -> 1 to 1 excitatory and static
         pop_len = len(self.CA3cueLayer)

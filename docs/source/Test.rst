@@ -19,4 +19,6 @@ Applications
 
 The applications allow the performance of the memory model to be tested in real time, in real or greater complexity situations than those shown in the tests, and even embedded in other larger systems.
 
-(In progress to publish news applications...)
+* `Real-time spike-based hippocampus memory model for image storage <https://github.com/dancasmor/Real-time-spike-based-hippocampus-memory-model-for-image-storage>`_: application that allows to perform learning and recall operations on 5x5 pixel black and white images on the hippocampal memory model in real time. A graphical interface is included to allow the user to create the images and perform the appropriate operations on the memory as well as to reconstruct images based on the spiking output of the network. It also includes a second GUI that allows to visualise the spiking activity of the whole network for each time step of the simulation. This visualisation will be both graphical, by means of a diagram of the memory model at the population level, and detailed with the exact specification of which neurons in which populations generate the spikes.
+
+(In progress to publish new applications...)

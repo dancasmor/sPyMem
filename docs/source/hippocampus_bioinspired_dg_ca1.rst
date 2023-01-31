@@ -1,6 +1,6 @@
 
-Hippocampus memory model with forgetting mechanism
-==================================================
+Hippocampus memory model with forgetting mechanism bioinspired DG and CA1 layers
+================================================================================
 
 This sections shows a hippocampus memory model with forgetting mechanism (Memory class in hippocampus_bioinspired_dg_ca1).
 

@@ -15,14 +15,15 @@ contSize = 10
 timeStep = 1.0
 
 # + Experiment:
-experiment = 3
+experiment = 1
 #   TEST:
 #   1) Learn and recall
 #   2) Learn, recall and relearning with forget
 #   3) A mix of several operations at max frequency (4 ms space between activations of CA3 cont)
 #       - 7 ms after learning
 #       - 6 ms after recall
-#   4) A mix of learn and recall by cue and content
+#   4) A mix of learn and recall by cue and content (only 1 content neuron at a time)
+#   5) A mix of learn and recall by cue and content (several content neurons at a time)
 
 if experiment == 1:
     # + Spikes of the input layer
@@ -58,10 +59,20 @@ elif experiment == 4:
     experiment_name = "4_learn_recall_by_content_01"
     """
     inputSpikesCue = [[0, 1, 2, 50, 60, 61, 62, 70], [10, 11, 12], [], [], []]
-    inputSpikesCont = [[0, 1, 2, 10, 11, 12, 20, 80], [0, 1, 2], [0, 1, 2, 40, 60, 61, 62, 90], [60, 61, 62], [], [], [], [10, 11, 12],
+    inputSpikesCont = [[0, 1, 2, 10, 11, 12, 20, 80], [0, 1, 2], [0, 1, 2, 40, 60, 61, 62, 90], [60, 61, 62], [], [],
+                       [], [10, 11, 12],
                        [0, 1, 2, 10, 11, 12], [0, 1, 2, 10, 11, 12, 30, 60, 61, 62, 100]]
     simTime = 110
-    experiment_name = "4_learn_recall_by_content_02"
+    experiment_name = "4_learn_recall_by_content_one_at_time"
+
+    recordWeight = False
+elif experiment == 5:
+    inputSpikesCue = [[0, 1, 2], [10, 11, 12, 50], [20, 21, 22], [], []]
+    inputSpikesCont = [[0, 1, 2, 30], [0, 1, 2, 10, 11, 12, 60], [0, 1, 2, 10, 11, 12, 20, 21, 22, 40],
+                       [10, 11, 12, 20, 21, 22, 60],
+                       [20, 21, 22, 30], [], [], [], [], []]
+    simTime = 70
+    experiment_name = "5_learn_recall_by_content_several_at_time"
 
     recordWeight = False
 

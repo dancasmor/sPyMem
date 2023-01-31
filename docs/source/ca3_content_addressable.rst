@@ -1,29 +1,21 @@
 
-Hippocampus memory model with forgetting mechanism
-==================================================
+CA3 content addressable memory model with forgetting mechanism
+==============================================================
 
-This sections shows a hippocampus memory model with forgetting mechanism (Memory class in hippocampus_with_forgetting).
+This sections shows a hippocampus memory model with forgetting mechanism and addressable by address and content (Memory class in ca3_content_addressable).
 
 Theoretical model
 -----------------
 
-This memory model comes from the paper entitled: "A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model", which can be found `here <https://arxiv.org/abs/2206.04924>`_.
+This hippocampal memory model builds on the foundations of the `CA3 <hippocampus_with_forgetting.html>`_ model to address content from the addresses to which they are associated and extends it to address addresses from content. In other words, from a binary content input (each bit/neuron of the content is made up of 0's or no pulse and 1's or neuron activation), the memory returns in which addresses it has as content at least one 1 (or active neuron) in one of those positions.
 
-To refer to this particular model:
-
-**APA**: Casanueva-Morato, D., Ayuso-Martinez, A., Dominguez-Morales, J. P., Jimenez-Fernandez, A., & Jimenez-Moreno, G. (2022). A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model. arXiv preprint arXiv:2206.04924.
-
-**ISO 690**: CASANUEVA-MORATO, Daniel, et al. A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model. arXiv preprint arXiv:2206.04924, 2022.
-
-**MLA**: Casanueva-Morato, Daniel, et al. "A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model." arXiv preprint arXiv:2206.04924 (2022).
-
-**BIBTEX**: @article{casanueva2022a, title={A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model}, author={Casanueva-Morato, Daniel and Ayuso-Martinez, Alvaro and Dominguez-Morales, Juan P and Jimenez-Fernandez, Angel and Jimenez-Moreno, Gabriel}, journal={arXiv preprint arXiv:2206.04924}, year={2022}}
+(In progress to publish this new model ...)
 
 
 Class information
 -----------------
 
-.. automodule:: sPyMem.hippocampus_with_forgetting.hippocampus_with_forgetting
+.. automodule:: sPyMem.CA3_content_addressable.CA3_content_addressable
    :members:
    :undoc-members:
   
@@ -34,17 +26,17 @@ To integrate the memory model in your own network, just import the model class a
 
 .. code-block::
 	
-	from sPyMem.hippocampus_with_forgetting import hippocampus_with_forgetting
+	from sPyMem.CA3_content_addressable import CA3_content_addressable
 	
-	memory = hippocampus_with_forgetting.Memory(cueSize, contSize, sim, ILayer, OLayer)
+	memory = CA3_content_addressable.Memory(cueSize, contSize, sim, ILayer, OLayer)
 
 The full example can be found at `sPyMem Github <https://github.com/dancasmor/sPyMem>`_, and for other examples see `Test and applications <Test.html>`_ section.
 
-This model of memory can perform 3 basic operations: learning memories, reacalling learned memories and forgetting them. Forgetting will take place automatically when an attempt is made to learn a memory with the same cue as a previously stored memory.
+This model of memory can perform the 3 basic operations: learning memories, reacalling learned memories and forgetting them. Forgetting will take place automatically when an attempt is made to learn a memory with the same cue as a previously stored memory. The main difference with CA3 model is that it has two types of recall operations. The first is to recall the content from a cue, for which a cue or address is passed and the memory returns the rest of the content associated with that address. The second is to recall which addresses are associated with a piece of content. To do this, a piece of content is passed and the memory returns those addresses that match at least one 1 of the content with which they are associated.
 
 In order to carry out learning and recall operations in this model, it is necessary to consider the following. For learning operations, spikes need to be held for 3 time units at the input of the memory and no further operation can be performed until 7 time units later. In the case of recall operations, spikes must be displayed for a single time unit and 6 time units must be waited until the next operation.
 
-When performing a learning operation, the network stores a memory and, 8 time units after having started the operation, the memory returns the learned memory to its output. In the case of a recall operation, after 6 time units the cue used to start the operation will appear at the memory output and one time unit later the rest of the memory.
+When performing a learning operation, the network stores a memory and, 5 (and 7) time units after having started the operation, the memory returns the learned memory to its output. In the case of a recall operation, after 5 time units the cue used to start the operation will appear at the memory output and one time unit later the rest of the memory.
 
 For more information on this temporality, principles of operation, internal functioning, ... read the paper.
 

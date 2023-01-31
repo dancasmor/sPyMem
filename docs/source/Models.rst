@@ -15,5 +15,8 @@ This section contains a list of implemented spike-based bio-inspired hippocampal
 
 .. toctree::
         :caption: Models:
-
+        
+        ca3
         hippocampus_with_forgetting
+        hippocampus_bioinspired_dg_ca1
+        ca3_content_addressable

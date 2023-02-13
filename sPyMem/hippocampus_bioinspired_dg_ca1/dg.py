@@ -70,6 +70,13 @@ class DG:
     def connect_in(self, ILayer, synInExcParameters, synInInhParameters):
         """Create synapses that connect the DG model with an input layer
 
+            :param ILayer: input population to the DG model
+            :type ILayer: population
+            :param synInExcParameters: IL-DGL-exc synapses parameters (for more information see `Custom config files`_)
+            :type synInExcParameters: dict
+            :param synInInhParameters: IL-DGL-inh synapses parameters (for more information see `Custom config files`_)
+            :type synInInhParameters: dict
+
             :returns:
         """
         # Calculate v diff between v threslhold and v rest + 0.5 (ensuring get to the threshold)
@@ -110,6 +117,11 @@ class DG:
 
     def connect_out(self, OLayer, synOutParameters):
         """Create synapses that connect the DG model with an output layer
+
+            :param OLayer: output population of the DG model
+            :type OLayer: population
+            :param synOutParameters: DGL-OL synapses parameters (for more information see `Custom config files`_)
+            :type synOutParameters: dict
 
             :returns:
         """

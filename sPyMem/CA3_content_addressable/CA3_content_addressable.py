@@ -50,10 +50,6 @@ class Memory:
        :type contSize: int
        :param sim: object in charge of handling the simulation
        :type sim: simulation object (spynnaker8 for spynnaker)
-       :param ILayer: input population to the memory model
-       :type ILayer: population
-       :param OLayer: output population of the memory model
-       :type OLayer: population
        :param configFilePath: path + filename to the config file of internal model parameters
        :type configFilePath: int, optional
        :param initCA3CueContW: list of initial weight to use in CA3cue-CA3cont synapse (initial memory content); format of each element of the list: (source_neuron_id, destination_neuron_id, initial_weight, delay)
@@ -101,6 +97,14 @@ class Memory:
        :vartype initNeuronParameters: dict
        :ivar synParameters: all synapses parameters of each synapse group (for more information see `Custom config files`_)
        :vartype synParameters: dict
+       :ivar synInCueParameters: IL-CA3cueCueRecallL synapses parameters (for more information see `Custom config files`_)
+       :vartype synInCueParameters: dict
+       :ivar synInContParameters: IL-CA3contCueRecallL synapses parameters (for more information see `Custom config files`_)
+       :vartype synInContParameters: dict
+       :ivar synOutCueParameters: CA3mergeCue-Output synapses parameters (for more information see `Custom config files`_)
+       :vartype synOutCueParameters: dict
+       :ivar synOutContParameters: CA3mergeCont-Output synapses parameters (for more information see `Custom config files`_)
+       :vartype synOutContParameters: dict
        :ivar IL_CA3cueCueRecallL_conn: IL-CA3cueCueRecallL synapses
        :vartype IL_CA3cueCueRecallL_conn: synapse
        :ivar CA3cueCueRecallL_CA3cueContRecallL_conn: CA3cueCueRecallL-CA3cueContRecallL synapses
@@ -134,15 +138,13 @@ class Memory:
        :ivar CA3mergeContL_OL_conn: CA3mergeContL-OL synapses
        :vartype CA3mergeContL_OL_conn: synapse
     """
-    def __init__(self, cueSize, contSize, sim, ILayer, OLayer, initCA3CueContW=None, initCA3ContCueW=None, configFilePath=None):
+    def __init__(self, cueSize, contSize, sim, initCA3CueContW=None, initCA3ContCueW=None, configFilePath=None):
         """Constructor method
         """
         # Storing parameters
         self.cueSize = cueSize
         self.contSize = contSize
         self.sim = sim
-        self.ILayer = ILayer
-        self.OLayer = OLayer
 
         if configFilePath == None:
             self.configFilePath = os.path.dirname(__file__) + "/config/network_config.json"
@@ -253,28 +255,6 @@ class Memory:
 
             :returns:
         """
-
-        # IL-CA3cueCueRecallL -> 1 to 1, excitatory and static (first cueSize bits/neurons)
-        self.IL_CA3cueCueRecallL_conn = self.sim.Projection(
-            self.sim.PopulationView(self.ILayer, range(0, self.popNeurons["CA3cueCueRecallLayer"])), self.CA3cueCueRecallLayer,
-            self.sim.OneToOneConnector(),
-            synapse_type=self.sim.StaticSynapse(
-                weight=self.synParameters["IL-CA3cueCueRecallL"]["initWeight"],
-                delay=self.synParameters["IL-CA3cueCueRecallL"]["delay"]),
-            receptor_type=self.synParameters["IL-CA3cueCueRecallL"]["receptor_type"])
-
-        # IL-CA3contCueRecallL -> 1 to 1, excitatory and static (last m neurons of IL: only the number of cues to use)
-        self.IL_CA3contCueRecallL_conn = self.sim.Projection(self.sim.PopulationView(self.ILayer, range(
-            self.popNeurons["CA3cueCueRecallLayer"], self.popNeurons["ILayer"], 1)),
-                                                             self.CA3contCueRecallLayer,
-                                                             self.sim.OneToOneConnector(),
-                                                             synapse_type=self.sim.StaticSynapse(
-                                                                 weight=self.synParameters["IL-CA3contCueRecallL"][
-                                                                     "initWeight"],
-                                                                 delay=self.synParameters["IL-CA3contCueRecallL"][
-                                                                     "delay"]),
-                                                             receptor_type=self.synParameters["IL-CA3contCueRecallL"][
-                                                                 "receptor_type"])
 
         # CA3cueCueRecallL-CA3cueContRecallL -> 1 to 1, excitatory and static
         self.CA3cueCueRecallLL_CA3cueContRecallL_conn = self.sim.Projection(self.CA3cueCueRecallLayer,
@@ -497,18 +477,90 @@ class Memory:
                                                                             "CA3contContRecallL-CA3mergeContL"][
                                                                             "receptor_type"])
 
+    def connect_in(self, ILayer, synInCueParameters=None, synInContParameters=None):
+        """Create synapses from an input layer to the memory model
+
+            :param ILayer: input population to the memory model
+            :type ILayer: population
+            :param synInCueParameters: IL-CA3cueCueRecallL synapses parameters (for more information see `Custom config files`_)
+            :type synInCueParameters: dict
+            :param synInContParameters: IL-CA3contCueRecallL synapses parameters (for more information see `Custom config files`_)
+            :type synInContParameters: dict
+
+            :returns:
+        """
+        if synInCueParameters==None:
+            self.synInCueParameters = self.synParameters
+        else:
+            self.synInCueParameters = synInCueParameters
+        if synInContParameters==None:
+            self.synInContParameters = self.synParameters
+        else:
+            self.synInContParameters = synInContParameters
+
+        # IL-CA3cueCueRecallL -> 1 to 1, excitatory and static (first cueSize bits/neurons)
+        self.IL_CA3cueCueRecallL_conn = self.sim.Projection(
+            self.sim.PopulationView(ILayer, range(0, self.popNeurons["CA3cueCueRecallLayer"])),
+            self.CA3cueCueRecallLayer,
+            self.sim.OneToOneConnector(),
+            synapse_type=self.sim.StaticSynapse(
+                weight=self.synInCueParameters["IL-CA3cueCueRecallL"]["initWeight"],
+                delay=self.synInCueParameters["IL-CA3cueCueRecallL"]["delay"]),
+            receptor_type=self.synInCueParameters["IL-CA3cueCueRecallL"]["receptor_type"])
+
+        # IL-CA3contCueRecallL -> 1 to 1, excitatory and static (last m neurons of IL: only the number of cues to use)
+        self.IL_CA3contCueRecallL_conn = self.sim.Projection(self.sim.PopulationView(ILayer, range(self.popNeurons["CA3cueCueRecallLayer"], self.popNeurons["ILayer"], 1)),
+                                                             self.CA3contCueRecallLayer,
+                                                             self.sim.OneToOneConnector(),
+                                                             synapse_type=self.sim.StaticSynapse(
+                                                                 weight=self.synInContParameters["IL-CA3contCueRecallL"][
+                                                                     "initWeight"],
+                                                                 delay=self.synInContParameters["IL-CA3contCueRecallL"][
+                                                                     "delay"]),
+                                                             receptor_type= self.synInContParameters["IL-CA3contCueRecallL"][
+                                                                 "receptor_type"])
+
+    def connect_out(self, OLayer, synOutCueParameters=None, synOutContParameters=None):
+        """Create synapses from the memory model to an output layer
+
+            :param OLayer: output population of the memory model
+            :type OLayer: population
+            :param synOutCueParameters: CA3mergeCue-Output synapses parameters (for more information see `Custom config files`_)
+            :type synOutCueParameters: dict
+            :param synOutContParameters: CA3mergeCont-Output synapses parameters (for more information see `Custom config files`_)
+            :type synOutContParameters: dict
+
+            :returns:
+        """
+        if synOutCueParameters==None:
+            self.synOutCueParameters = self.synParameters
+        else:
+            self.synOutCueParameters = synOutCueParameters
+        if synOutContParameters==None:
+            self.synOutContParameters = self.synParameters
+        else:
+            self.synOutContParameters = synOutContParameters
+
         # CA3mergeCue-Output -> 1 to 1 excitatory and static
-        self.CA3mergeCueL_OL_conn = self.sim.Projection(self.CA3mergeCueLayer, self.sim.PopulationView(self.OLayer, range(0, self.popNeurons["CA3mergeCueLayer"])),
+        self.CA3mergeCueL_OL_conn = self.sim.Projection(self.CA3mergeCueLayer,
+                                                        self.sim.PopulationView(OLayer, range(0, self.popNeurons["CA3mergeCueLayer"])),
                                                         self.sim.OneToOneConnector(),
                                                         synapse_type=self.sim.StaticSynapse(
-                                                   weight=self.synParameters["CA3mergeCueL-OL"]["initWeight"],
-                                                   delay=self.synParameters["CA3mergeCueL-OL"]["delay"]),
-                                                        receptor_type=self.synParameters["CA3mergeCueL-OL"]["receptor_type"])
+                                                            weight=self.synOutCueParameters["CA3mergeCueL-OL"][
+                                                                "initWeight"],
+                                                            delay=self.synOutCueParameters["CA3mergeCueL-OL"]["delay"]),
+                                                        receptor_type=self.synOutCueParameters["CA3mergeCueL-OL"][
+                                                            "receptor_type"])
 
         # CA3mergeCont-Output -> 1 to 1 excitatory and static
-        self.CA3mergeContL_OL_conn = self.sim.Projection(self.CA3mergeContLayer, self.sim.PopulationView(self.OLayer, range(self.popNeurons["CA3mergeCueLayer"], self.popNeurons["OLayer"], 1)),
+        self.CA3mergeContL_OL_conn = self.sim.Projection(self.CA3mergeContLayer,
+                                                         self.sim.PopulationView(OLayer, range(
+                                                             self.popNeurons["CA3mergeCueLayer"],
+                                                             self.popNeurons["OLayer"], 1)),
                                                          self.sim.OneToOneConnector(),
                                                          synapse_type=self.sim.StaticSynapse(
-                                              weight=self.synParameters["CA3mergeContL-OL"]["initWeight"],
-                                              delay=self.synParameters["CA3mergeContL-OL"]["delay"]),
-                                                         receptor_type=self.synParameters["CA3mergeContL-OL"]["receptor_type"])
+                                                             weight=self.synOutContParameters["CA3mergeContL-OL"][
+                                                                 "initWeight"],
+                                                             delay=self.synOutContParameters["CA3mergeContL-OL"]["delay"]),
+                                                         receptor_type=self.synOutContParameters["CA3mergeContL-OL"][
+                                                             "receptor_type"])

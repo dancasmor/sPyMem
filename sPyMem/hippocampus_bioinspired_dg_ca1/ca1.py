@@ -49,8 +49,13 @@ class CA1:
         self.CA1Layer = self.sim.Population(self.size, self.sim.IF_curr_exp(**self.neuronParameters["CA1L"]), label="CA1Layer")
         self.CA1Layer.set(v=self.initNeuronParameters["CA1"]["vInit"])
 
-    def connect(self, ILayer, OLayer, synInParameters, synOutParameters):
-        """Create synapses that connect the CA1 model with an input and output layer
+    def connect_in(self, ILayer, synInParameters):
+        """Create synapses that connect the CA1 model with an input layer
+
+            :param ILayer: input population to the CA1 model
+            :type ILayer: population
+            :param synInParameters: IN-CA1 synapses parameters (for more information see `Custom config files`_)
+            :type synInParameters: dict
 
             :returns:
         """
@@ -73,9 +78,20 @@ class CA1:
                                         delay=synInParameters["delay"]),
                                     receptor_type=synInParameters["receptor_type"])
 
+    def connect_out(self, OLayer, synOutParameters):
+        """Create synapses that connect the CA1 model with an output layer
+
+            :param OLayer: output population of the CA1 model
+            :type OLayer: population
+            :param synOutParameters: CA1L-OL synapses parameters (for more information see `Custom config files`_)
+            :type synOutParameters: dict
+
+            :returns:
+        """
         # CA1-out: 1 to 1 excitatory
         self.sim.Projection(self.CA1Layer, OLayer, self.sim.OneToOneConnector(),
-                            synapse_type=self.sim.StaticSynapse(weight=synOutParameters["initWeight"], delay=synOutParameters["delay"]),
+                            synapse_type=self.sim.StaticSynapse(weight=synOutParameters["initWeight"],
+                                                                delay=synOutParameters["delay"]),
                             receptor_type=synOutParameters["receptor_type"])
 
     def decimal_to_binary(self, num, list):

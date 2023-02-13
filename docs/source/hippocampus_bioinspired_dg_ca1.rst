@@ -26,8 +26,10 @@ To integrate the memory model in your own network, just import the model class a
 .. code-block::
 	
 	from sPyMem.hippocampus_bioinspired_dg_ca1 import hippocampus_bioinspired_dg_ca1
-	
-	memory = hippocampus_bioinspired_dg_ca1.Memory(cueSize, contSize, sim, ILayer, OLayer)
+
+	memory = hippocampus_bioinspired_dg_ca1.Memory(cueSize, contSize, sim)
+	memory.connect_in(ILayer)
+	memory.connect_out(OLayer)
 
 The full example can be found at `sPyMem Github <https://github.com/dancasmor/sPyMem>`_, and for other examples see `Test and applications <Test.html>`_ section.
 

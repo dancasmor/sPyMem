@@ -36,7 +36,9 @@ To integrate the memory model in your own network, just import the model class a
 	
 	from sPyMem.ca3 import CA3
 	
-	memory = CA3.Memory(cueSize, contSize, sim, ILayer, OLayer)
+	memory = CA3.Memory(cueSize, contSize, sim)
+	memory.connect_in(ILayer)
+	memory.connect_out(OLayer)
 
 The full example can be found at `sPyMem Github <https://github.com/dancasmor/sPyMem>`_, and for other examples see `Test and applications <Test.html>`_ section.
 

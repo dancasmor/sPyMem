@@ -1,8 +1,8 @@
 
 import math
 import json
-from sPyMem.hippocampus_bioinspired_dg_ca1.ca1 import CA1
-from sPyMem.hippocampus_bioinspired_dg_ca1.dg import DG
+from ca1 import CA1
+from dg import DG
 import os
 
 
@@ -48,8 +48,6 @@ class Memory:
        :vartype contSize: int
        :ivar sim: object in charge of handling the simulation, initial value: sim
        :vartype sim: simulation object (spynnaker8 for spynnaker)
-       :ivar ILayer: input population to the memory model, initial value: ILayer
-       :vartype ILayer: population
        :ivar CA3cueLayer: CA3cue population
        :vartype CA3cueLayer: population
        :ivar CA3contLayer: CA3cont population
@@ -58,8 +56,6 @@ class Memory:
        :vartype DG: DG (contains DGLayer and IL-DGL and DGL-CA3cueL synapses)
        :ivar CA1: CA1 object
        :vartype CA1: CA1 (contains CA1Layer and CA3cueL-CA1L and CA1L-OL synapses)
-       :ivar OLayer: output population of the memory model, initial value: OLayer
-       :vartype OLayer: population
        :ivar configFilePath: path + filename to the config file of internal model parameters, initial value: configFilePath or internal path to default config file
        :vartype configFilePath: str
        :ivar initCA3W: list of initial weight to use in CA3 synapse (initial memory content); format of each element of the list: (source_neuron_id, destination_neuron_id, initial_weight, delay), initial value: None or input class parameter

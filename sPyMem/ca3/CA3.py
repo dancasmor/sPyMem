@@ -41,14 +41,10 @@ class Memory:
        :vartype contSize: int
        :ivar sim: object in charge of handling the simulation, initial value: sim
        :vartype sim: simulation object (spynnaker8 for spynnaker)
-       :ivar ILayer: input population to the memory model, initial value: ILayer
-       :vartype ILayer: population
        :ivar CA3cueLayer: CA3cue population
        :vartype CA3cueLayer: population
        :ivar CA3contLayer: CA3cont population
        :vartype CA3contLayer: population
-       :ivar OLayer: output population of the memory model, initial value: OLayer
-       :vartype OLayer: population
        :ivar configFilePath: path + filename to the config file of internal model parameters, initial value: configFilePath or internal path to default config file
        :vartype configFilePath: str
        :ivar initCA3W: list of initial weight to use in CA3 synapse (initial memory content); format of each element of the list: (source_neuron_id, destination_neuron_id, initial_weight, delay), initial value: None or input class parameter

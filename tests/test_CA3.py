@@ -67,7 +67,9 @@ def test():
     OLayer = sim.Population(numInputLayerNeurons, sim.IF_curr_exp(**neuronParameters), label="OLayer")
     OLayer.set(v=-60)
     # Create memory
-    memory = CA3.Memory(cueSize, contSize, sim, ILayer, OLayer)
+    memory = CA3.Memory(cueSize, contSize, sim)
+    memory.connect_in(ILayer)
+    memory.connect_out(OLayer)
 
     # Record spikes from output layer
     memory.CA3cueLayer.record(["spikes"])

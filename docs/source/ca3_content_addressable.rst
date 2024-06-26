@@ -7,9 +7,17 @@ This sections shows a hippocampus memory model with forgetting mechanism and add
 Theoretical model
 -----------------
 
-This hippocampal memory model builds on the foundations of the `CA3 <hippocampus_with_forgetting.html>`_ model to address content from the addresses to which they are associated and extends it to address addresses from content. In other words, from a binary content input (each bit/neuron of the content is made up of 0's or no pulse and 1's or neuron activation), the memory returns in which addresses it has as content at least one 1 (or active neuron) in one of those positions.
+This memory model comes from the paper entitled: "Bio-inspired computational memory model of the Hippocampus: An approach to a neuromorphic spike-based Content-Addressable Memory", which can be found `here <https://www.sciencedirect.com/science/article/pii/S0893608024003988>`_.
 
-(In progress to publish this new model ...)
+To refer to this particular model:
+
+**APA**: Casanueva-Morato, D., Ayuso-Martinez, A., Dominguez-Morales, J. P., Jimenez-Fernandez, A., & Jimenez-Moreno, G. (2023). Bio-inspired computational memory model of the Hippocampus: an approach to a neuromorphic spike-based Content-Addressable Memory. arXiv preprint arXiv:2310.05868.
+
+**ISO 690**: CASANUEVA-MORATO, Daniel, et al. Bio-inspired computational memory model of the Hippocampus: an approach to a neuromorphic spike-based Content-Addressable Memory. arXiv preprint arXiv:2310.05868, 2023.
+
+**MLA**: Casanueva-Morato, Daniel, et al. "Bio-inspired computational memory model of the Hippocampus: an approach to a neuromorphic spike-based Content-Addressable Memory." arXiv preprint arXiv:2310.05868 (2023).
+
+**BIBTEX**: @article{casanueva2023bio, title={Bio-inspired computational memory model of the Hippocampus: an approach to a neuromorphic spike-based Content-Addressable Memory}, author={Casanueva-Morato, Daniel and Ayuso-Martinez, Alvaro and Dominguez-Morales, Juan P and Jimenez-Fernandez, Angel and Jimenez-Moreno, Gabriel}, journal={arXiv preprint arXiv:2310.05868}, year={2023}}
 
 
 Class information

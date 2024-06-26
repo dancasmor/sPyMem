@@ -11,13 +11,13 @@ This memory model comes from the functional minimisation of the hippocampal memo
 
 To refer to this particular model:
 
-**APA**: Casanueva-Morato, D., Ayuso-Martinez, A., Dominguez-Morales, J. P., Jimenez-Fernandez, A., & Jimenez-Moreno, G. (2022). A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model. arXiv preprint arXiv:2206.04924.
+**APA**: Casanueva-Morato, D., Ayuso-Martinez, A., Dominguez-Morales, J. P., Jimenez-Fernandez, A., & Jimenez-Moreno, G. (2024). A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model. IEEE Transactions on Emerging Topics in Computing.
 
-**ISO 690**: CASANUEVA-MORATO, Daniel, et al. A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model. arXiv preprint arXiv:2206.04924, 2022.
+**ISO 690**: CASANUEVA-MORATO, Daniel, et al. A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model. IEEE Transactions on Emerging Topics in Computing, 2024.
 
-**MLA**: Casanueva-Morato, Daniel, et al. "A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model." arXiv preprint arXiv:2206.04924 (2022).
+**MLA**: Casanueva-Morato, Daniel, et al. "A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model." IEEE Transactions on Emerging Topics in Computing (2024).
 
-**BIBTEX**: @article{casanueva2022a, title={A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model}, author={Casanueva-Morato, Daniel and Ayuso-Martinez, Alvaro and Dominguez-Morales, Juan P and Jimenez-Fernandez, Angel and Jimenez-Moreno, Gabriel}, journal={arXiv preprint arXiv:2206.04924}, year={2022}}
+**BIBTEX**: @article{casanueva2024bio, title={A bio-inspired implementation of a sparse-learning spike-based hippocampus memory model}, author={Casanueva-Morato, Daniel and Ayuso-Martinez, Alvaro and Dominguez-Morales, Juan P and Jimenez-Fernandez, Angel and Jimenez-Moreno, Gabriel}, journal={IEEE Transactions on Emerging Topics in Computing}, year={2024}, publisher={IEEE}}
 
 
 Class information
